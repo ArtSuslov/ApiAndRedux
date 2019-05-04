@@ -1,18 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
-import uuidv4 from 'uuid/v4'
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { getUsers } from './actions/pageActions';
 
 
 class App extends Component {
-  constructor (props) {
-    super(props);
-
-    this.state = {
-      users: []
-    }
-  }
   componentDidMount() {
     this.props.getUsers();
   }
@@ -22,8 +14,7 @@ class App extends Component {
       <div>
         <ul>
           {users.map(user => {
-            const { id, name } = user;
-            const key = uuidv4();
+            const { id, name, key } = user;
             return !(id % 2) ? <li key={key}>ID of {name} is {id}</li> : null
           })}
         </ul>
