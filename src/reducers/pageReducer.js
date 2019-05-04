@@ -6,7 +6,7 @@ export const initialState = {
   error: ''
 }
 
-export function usersReducer (state = initialState, action) {
+export function pageReducer (state = initialState, action) {
   switch(action.type) {
     case GET_USERS_REQUEST:
       return { ...state, isFetching: true, error: ''}

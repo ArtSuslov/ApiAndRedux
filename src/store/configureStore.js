@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
-import { usersReducer } from '../reducers/usersReducer.js';
+import { pageReducer } from '../reducers/pageReducer.js';
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 
 
-export const store = createStore(usersReducer, applyMiddleware(thunk, logger));
+export const store = createStore(pageReducer, applyMiddleware(thunk, logger));
