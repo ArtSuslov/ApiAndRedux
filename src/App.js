@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import uuidv4 from 'uuid/v4'
+import { connect } from 'react-redux'
+import { getUsers } from './actions/pageActions';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends Component {
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      users: []
+    }
+  }
+  componentDidMount() {
+    this.props.getUsers();
+  }
+  render() {
+    const { users } = this.props;
+    return (
+      <div>
+        <ul>
+          {users.map(user => {
+            const { id, name } = user;
+            const key = uuidv4();
+            return !(id % 2) ? <li key={key}>ID of {name} is {id}</li> : null
+          })}
+        </ul>
+      </div>
+    )
+  }
 }
 
-export default App;
+const mapStateToProps = store => {
+  return {
+    users: store.users,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getUsers: () => dispatch(getUsers())
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
