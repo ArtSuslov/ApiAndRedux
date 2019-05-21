@@ -1,25 +1,32 @@
 import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
-import { getUsers } from './actions/pageActions';
+import { getUsers } from './actions/userActions';
+import { getPosts } from './actions/postActions';
+import Users from './components/users';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { UsersButton } from './components/usersButton';
+import Posts from './components/posts';
 
 
 class App extends Component {
-  componentDidMount() {
+  componentWillMount() {
+    this.props.getPosts();
     this.props.getUsers();
   }
+
+
   render() {
     const { users } = this.props;
     return (
-      <div>
-        <ul>
-          {users.map(user => {
-            const { id, name, key } = user;
-            return !(id % 2) ? <li key={key}>ID of {name} is {id}</li> : null
-          })}
-        </ul>
-      </div>
-    )
+      <BrowserRouter>
+        <Switch>
+          <Route exact path='/' component={UsersButton} />
+          <Route path='/users' render={() => <Users users={users.usersList} />} />
+          <Route path='/user:id' component={Posts} />
+        </Switch>
+      </BrowserRouter>
+    );
   }
 }
 
@@ -31,7 +38,8 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getUsers: () => dispatch(getUsers())
+    getUsers: () => dispatch(getUsers()),
+    getPosts: () => dispatch(getPosts())
   }
 }
 

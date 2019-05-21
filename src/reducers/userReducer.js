@@ -1,18 +1,18 @@
-import { GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USERS_FAIL } from '../actions/pageActions'
+import { GET_USERS_REQUEST, GET_USERS_SUCCESS, GET_USERS_FAIL } from '../actions/userActions'
 
-export const initialState = {
-  users: [],
+const initialState = {
+  usersList: [],
   isFetching: false,
   error: ''
 }
 
-export function pageReducer (state = initialState, action) {
+export function userReducer (state = initialState, action) {
   switch(action.type) {
     case GET_USERS_REQUEST:
       return { ...state, isFetching: true, error: ''}
 
     case GET_USERS_SUCCESS:
-      return { ...state, isFetching: false, users: action.payload}
+      return { ...state, isFetching: false, usersList: action.payload}
 
     case GET_USERS_FAIL:
       return { ...state, isFetching: false, error: action.payload.message }
