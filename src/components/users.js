@@ -1,28 +1,41 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getUsers } from '../actions/userActions';
 
-const Users = (props) => {
-  const { users, } = props;
-  const filteredUsers = users.filter(e => !(e.id % 2));
-  return (
-    <div>
-      <ul>
-        {filteredUsers.map(user => {
-          const { id, name } = user;
-          return <li key={id}>
-                   ID of {name} is {id} <Link to={`/user${id}`}>Показать посты</Link>
-                 </li>
-        })}
-      </ul>
 
-      {/* filteredUsers.map(user => <Route
-                                    key={user.id * 10}
-                                    path={`/user${user.id}posts`}
-                                    render={() => <Posts userId={user.id} data={posts.postsList}/>}
-                                  />
-      ) */}
-    </div>
+class Users extends Component {
+  componentDidMount () {
+    this.props.getUsers();
+  }
+
+  render () {
+    const { usersList } = this.props.users;
+    const filteredUsers = usersList.filter(e => !(e.id % 2));
+    return (
+      <div>
+        <ul>
+          {filteredUsers.map(user => {
+            const { id, name } = user;
+            return <li key={id}>
+                     ID of {name} is {id} <Link to={`posts/${id}`}>Показать посты</Link>
+                   </li>
+          })}
+        </ul>
+      </div>
     )
-}
+  }
+};
 
-export default Users;
+const mapStateToProps = store => {
+  return {
+    users: store.users,
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getUsers: () => dispatch(getUsers()),
+  }
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Users);

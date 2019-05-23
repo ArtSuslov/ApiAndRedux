@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { getPosts } from '../actions/postActions';
 
 class Posts extends Component {
-  render() {
+ componentDidMount () {
+  this.props.getPosts();
+ }
+
+  render () {
     const { postsList } = this.props.posts;
     const { id } = this.props.match.params;
     const filteredPosts = postsList.filter(e => e.userId === +id);
-    console.log(filteredPosts);
     return (
       <div>
-        { filteredPosts.map( post => (
-          <div>
+        {filteredPosts.map( post => (
+          <div key={post.id}>
             <h2>Users ID - {`${id}`} title: {post.title}</h2>
             <p>{post.body}</p>
           </div>
@@ -18,13 +22,18 @@ class Posts extends Component {
       )}
       </div>
     )
+    }
   }
-}
 
   const mapStateToProps = store => {
     return {
       posts: store.posts,
     }
-  }
+  };
 
-export default connect(mapStateToProps)(Posts);
+  const mapDispatchToProps = dispatch => {
+    return {
+      getPosts: () => dispatch(getPosts()),
+    }
+  };
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);
