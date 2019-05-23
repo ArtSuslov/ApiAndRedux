@@ -4,18 +4,16 @@ import { getPosts } from '../actions/postActions';
 
 class Posts extends Component {
  componentDidMount () {
-  this.props.getPosts();
+  this.props.getPosts(this.props.match.params.id);
  }
 
   render () {
     const { postsList } = this.props.posts;
-    const { id } = this.props.match.params;
-    const filteredPosts = postsList.filter(e => e.userId === +id);
     return (
       <div>
-        {filteredPosts.map( post => (
+        {postsList.map( post => (
           <div key={post.id}>
-            <h2>Users ID - {`${id}`} title: {post.title}</h2>
+            <h2>Users ID - {`${post.userId}`} title: {post.title}</h2>
             <p>{post.body}</p>
           </div>
         )
@@ -33,7 +31,7 @@ class Posts extends Component {
 
   const mapDispatchToProps = dispatch => {
     return {
-      getPosts: () => dispatch(getPosts()),
+      getPosts: userId => dispatch(getPosts(userId)),
     }
   };
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
