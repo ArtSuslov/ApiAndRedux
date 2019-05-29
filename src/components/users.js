@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getUsers } from '../actions/userActions';
+import { selectEvenUsers } from '../selectors/userSelectors';
 
 
 class Users extends Component {
@@ -10,12 +11,11 @@ class Users extends Component {
   }
 
   render () {
-    const { usersList } = this.props.users;
-    const filteredUsers = usersList.filter(e => !(e.id % 2));
+    const { usersList } = this.props;
     return (
       <div>
         <ul>
-          {filteredUsers.map(user => {
+          {usersList.map(user => {
             const { id, name } = user;
             return <li key={id}>
                      ID of {name} is {id} <Link to={`posts/${id}`}>Показать посты</Link>
@@ -27,12 +27,12 @@ class Users extends Component {
   }
 };
 
-const mapStateToProps = store => {
+const mapStateToProps = state => {
   return {
-    users: store.users,
+    usersList: selectEvenUsers(state),
   }
 };
-
+//selectUsersList(store),
 const mapDispatchToProps = dispatch => {
   return {
     getUsers: () => dispatch(getUsers()),
