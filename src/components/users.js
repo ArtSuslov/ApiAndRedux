@@ -23,7 +23,7 @@ class Users extends Component {
                   })}
         </ul>
       )
-    } else return <h3>Введите имя пользователя</h3>
+    } else return <h3>Такого пользователя нет в списке</h3>
   }
 
   handleInput = e => {

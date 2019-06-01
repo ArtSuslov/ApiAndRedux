@@ -11,8 +11,22 @@ import {
 class Posts extends Component {
   constructor(props){
     super(props);
+
+    const {
+      postsListById,
+      postsListByIdReversed,
+      postsListByTitle,
+      postsListByTitleReversed,
+    } = this.props;
+    this.sorting = {
+      byId: postsListById,
+      byIdReversed: postsListByIdReversed,
+      byTitle: postsListByTitle,
+      byTitleReversed: postsListByTitleReversed,
+    };
+    console.log(this.sorting, 'sorting obj');
     this.state = {
-      sortBy: 'byId'
+      sortBy: 'byId',
     }
   }
   componentDidMount () {
@@ -24,32 +38,14 @@ class Posts extends Component {
 };
 
   render () {
-    const {
-      postsListById,
-      postsListByIdReversed,
-      postsListByTitle,
-      postsListByTitleReversed,
-    } = this.props;
-    let postsList;
-    switch(this.state.sortBy){
-      case 'byIdReversed':
-        postsList = postsListByIdReversed;
-        break;
-      case 'byTitleReversed':
-        postsList = postsListByTitleReversed;
-        break;
-      case 'byTitle':
-        postsList = postsListByTitle;
-        break;
-      default: postsList = postsListById;
-    }
+    const postsList = this.sorting[this.state.sortBy];
     return (
       <div>
-      <select onChange={this.handleChange}>
-        <option defaultValue='byId'>By ID</option>
+      <select onChange={this.handleChange} value={this.state.value}>
         <option value='byTitle'>By Title</option>
         <option value='byTitleReversed'>By Title reversed</option>
         <option value='byIdReversed'>By ID reversed</option>
+        <option value='byId'>By ID</option>
       </select>
         {postsList.map( post => (
           <div key={post.id}>

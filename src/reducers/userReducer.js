@@ -4,7 +4,7 @@ const initialState = {
   usersList: [],
   isFetching: false,
   error: '',
-  usersName: 'John',
+  usersName: '',
 }
 
 export function userReducer (state = initialState, action) {

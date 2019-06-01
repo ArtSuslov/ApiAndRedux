@@ -4,10 +4,8 @@ export const selectEvenUsers = state =>{
 }
 export const selectName = state => {
   const tempArr = state.users.usersList.slice();
-  let selectedNames = [];
-  for (let i = 0; i < tempArr.length; i++) {
-    if(tempArr[i].name.includes(state.users.usersName))
-    selectedNames.push(tempArr[i]);
-  }
+  const selectedNames = tempArr.filter(i => {
+    return i.name.includes(state.users.usersName)
+  });
   return selectedNames;
 }
