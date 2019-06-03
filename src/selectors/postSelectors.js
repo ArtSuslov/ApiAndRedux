@@ -1,3 +1,33 @@
+import { createSelector } from 'reselect';
+
+export const selectPostsById = createSelector(
+  state => state.posts.postsList.slice(),
+  posts => posts.sort((a, b) => a.id - b.id),
+);
+
+export const selectPostsByIdReversed = createSelector(
+  state => state.posts.postsList.slice(),
+  posts => posts.sort((a, b) => b.id - a.id),
+);
+
+export const selectPostsByTitle = createSelector(
+  state => state.posts.postsList.slice(),
+  posts => posts.sort((a, b) => {
+    if(b.title < a.title) {return 1}
+    else if(b.title > a.title) {return -1};
+    return 0;
+  }),
+);
+
+export const selectPostsByTitleReversed = createSelector(
+  state => state.posts.postsList.slice(),
+  posts => posts.sort((a, b) => {
+    if(b.title > a.title) {return 1}
+    else if(b.title < a.title) {return -1};
+    return 0;
+  }),
+);
+/*
 export const selectPostsById = state => {
   const sortedArr = state.posts.postsList.slice();
   return sortedArr.sort((a, b) => a.id - b.id);
@@ -24,3 +54,4 @@ export const selectPostsByTitleReversed = state => {
   });
   return sortedArr;
 };
+*/
