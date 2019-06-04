@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getPosts } from '../actions/postActions';
+import { getPosts, sortPosts } from '../actions/postActions';
 import {
-   selectPostsById,
-   selectPostsByIdReversed,
-   selectPostsByTitleReversed,
-   selectPostsByTitle,
+   selectSortedPosts,
+   selectPostsSortType,
  } from '../selectors/postSelectors';
 
 class Posts extends Component {
@@ -16,38 +14,26 @@ class Posts extends Component {
       sortBy: 'byId',
     }
   }
-  componentDidMount () {
-  this.props.getPosts(this.props.match.params.id);
+
+  componentDidMount() {
+    this.props.getPosts(this.props.match.params.id);
 };
 
   handleChange = e => {
-  this.setState({sortBy: e.target.value})
+    this.props.setSort(e.target.value);
 };
 
   render () {
-    const {
-      postsListById,
-      postsListByIdReversed,
-      postsListByTitle,
-      postsListByTitleReversed,
-    } = this.props;
-    const sorting = {
-      byId: postsListById,
-      byIdReversed: postsListByIdReversed,
-      byTitle: postsListByTitle,
-      byTitleReversed: postsListByTitleReversed,
-    };
-    console.log(this.props, 'props');
-    const postsList = sorting[this.state.sortBy];
+    const { sortedPosts } = this.props;
     return (
       <div>
-      <select onChange={this.handleChange} value={this.state.sortBy}>
+      <select onChange={this.handleChange} value={this.props.sortBy}>
         <option value='byTitle'>By Title</option>
         <option value='byTitleReversed'>By Title reversed</option>
         <option value='byIdReversed'>By ID reversed</option>
         <option value='byId'>By ID</option>
       </select>
-        {postsList.map( post => (
+        {sortedPosts.map( post => (
           <div key={post.id}>
             <h2>Users ID - {`${post.userId}`} title: {post.title}</h2>
             <h3>ID: {post.id}</h3>
@@ -62,16 +48,15 @@ class Posts extends Component {
 
   const mapStateToProps = state => {
     return {
-      postsListById: selectPostsById(state),
-      postsListByIdReversed: selectPostsByIdReversed(state),
-      postsListByTitle: selectPostsByTitle(state),
-      postsListByTitleReversed: selectPostsByTitleReversed(state),
+      sortedPosts: selectSortedPosts(state),
+      sortBy: selectPostsSortType(state),
     }
   };
 
   const mapDispatchToProps = dispatch => {
     return {
       getPosts: userId => dispatch(getPosts(userId)),
+      setSort: sortBy => dispatch(sortPosts(sortBy))
     }
   };
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);

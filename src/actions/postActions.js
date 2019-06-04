@@ -3,6 +3,7 @@ import axios from 'axios';
 export const GET_POSTS_REQUEST = 'GET_POSTS_REQUEST';
 export const GET_POSTS_SUCCESS = 'GET_POSTS_SUCCESS';
 export const GET_POSTS_FAIL = 'GET_POSTS_FAIL';
+export const SET_SORT_TYPE = 'SET_SORT_TYPE';
 
 export function getPosts(userId) {
   return function(dispatch) {
@@ -25,5 +26,14 @@ export function getPosts(userId) {
         })
       }
     }, 4)
+  }
+}
+
+export function sortPosts(sortBy) {
+  return function(dispatch){
+    dispatch({
+      type: SET_SORT_TYPE,
+      payload: sortBy,
+    });
   }
 }

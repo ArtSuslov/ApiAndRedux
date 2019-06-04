@@ -1,57 +1,43 @@
 import { createSelector } from 'reselect';
 
-export const selectPostsById = createSelector(
-  state => state.posts.postsList.slice(),
-  posts => posts.sort((a, b) => a.id - b.id),
+export const selectPostsReducer = state => state.posts;
+
+export const selectPostsList = createSelector(
+  selectPostsReducer,
+  reducer => reducer.postsList
+);
+export const selectPostsSortType = createSelector(
+  selectPostsReducer,
+  post => {
+    return post.sortBy}
 );
 
-export const selectPostsByIdReversed = createSelector(
-  state => state.posts.postsList.slice(),
-  posts => posts.sort((a, b) => b.id - a.id),
-);
+export const selectSortedPosts = createSelector(
+  selectPostsList,
+  selectPostsSortType,
+  (list, sort) => {
+    console.log(list, sort);
+    switch(sort) {
 
-export const selectPostsByTitle = createSelector(
-  state => state.posts.postsList.slice(),
-  posts => posts.sort((a, b) => {
-    if(b.title < a.title) {return 1}
-    else if(b.title > a.title) {return -1};
-    return 0;
-  }),
-);
+      case 'byIdReversed':
+        return list.sort((a, b) => b.id - a.id);
 
-export const selectPostsByTitleReversed = createSelector(
-  state => state.posts.postsList.slice(),
-  posts => posts.sort((a, b) => {
-    if(b.title > a.title) {return 1}
-    else if(b.title < a.title) {return -1};
-    return 0;
-  }),
+      case 'byTitle':
+        return list.sort((a, b) => {
+          if (b.title < a.title) {return 1}
+          else if(b.title > a.title) {return -1};
+          return 0;
+        });
+
+      case 'byTitleReversed':
+        return list.sort((a, b) => {
+          if(b.title > a.title) {return 1}
+          else if(b.title < a.title) {return -1};
+          return 0;
+        })
+
+      default:
+        return list.sort((a, b) => a.id - b.id);
+    }
+  }
 );
-/*
-export const selectPostsById = state => {
-  const sortedArr = state.posts.postsList.slice();
-  return sortedArr.sort((a, b) => a.id - b.id);
-};
-export const selectPostsByIdReversed = state => {
-  const sortedArr = state.posts.postsList.slice();
-  return sortedArr.sort((a, b) => b.id - a.id);
-};
-export const selectPostsByTitle = state => {
-  const sortedArr = state.posts.postsList.slice();
-  sortedArr.sort((a, b) => {
-    if(b.title < a.title) {return 1}
-    else if(b.title > a.title) {return -1};
-    return 0;
-  });
-  return sortedArr;
-};
-export const selectPostsByTitleReversed = state => {
-  const sortedArr = state.posts.postsList.slice();
-  sortedArr.sort((a, b) => {
-    if(b.title > a.title) {return 1}
-    else if(b.title < a.title) {return -1};
-    return 0;
-  });
-  return sortedArr;
-};
-*/
