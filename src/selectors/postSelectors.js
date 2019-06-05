@@ -16,28 +16,28 @@ export const selectSortedPosts = createSelector(
   selectPostsList,
   selectPostsSortType,
   (list, sort) => {
-    console.log(list, sort);
+    const selectedPosts = [...list];
     switch(sort) {
 
       case 'byIdReversed':
-        return list.sort((a, b) => b.id - a.id);
+        return selectedPosts.sort((a, b) => b.id - a.id);
 
       case 'byTitle':
-        return list.sort((a, b) => {
+        return selectedPosts.sort((a, b) => {
           if (b.title < a.title) {return 1}
           else if(b.title > a.title) {return -1};
           return 0;
         });
 
       case 'byTitleReversed':
-        return list.sort((a, b) => {
+        return selectedPosts.sort((a, b) => {
           if(b.title > a.title) {return 1}
           else if(b.title < a.title) {return -1};
           return 0;
         })
 
       default:
-        return list.sort((a, b) => a.id - b.id);
+        return selectedPosts.sort((a, b) => a.id - b.id);
     }
   }
 );

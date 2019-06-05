@@ -30,10 +30,8 @@ export function getUsers() {
 }
 
 export function sendUsersName (name) {
-  return function(dispatch) {
-    dispatch({
+  return {
       type: SEND_USERS_NAME,
       payload: name,
-    });
   }
 }

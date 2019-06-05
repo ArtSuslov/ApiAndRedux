@@ -30,10 +30,8 @@ export function getPosts(userId) {
 }
 
 export function sortPosts(sortBy) {
-  return function(dispatch){
-    dispatch({
+  return {
       type: SET_SORT_TYPE,
       payload: sortBy,
-    });
   }
 }
